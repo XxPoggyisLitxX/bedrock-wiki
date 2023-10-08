@@ -365,7 +365,7 @@ This component controls whether or not you can break bocks with this item while 
 }
 ```
 
-### minecraft:mirrored_art
+
 
 <CodeHeader></CodeHeader>
 
@@ -377,6 +377,9 @@ This component controls whether or not you can break bocks with this item while 
 
 ### minecraft:explodable
 This component controls whether or not this item can be blown up by explosions such as tnt or a creeper. 
+:::warning
+This component might have been deprecated in 1.20.30
+:::
 
 <CodeHeader></CodeHeader>
 
@@ -438,13 +441,21 @@ This component allows an item to be used on a liquid block to trigger the "minec
 ```json
 {
 	"minecraft:block_placer": {
-		"block": "minecraft:grass",
-		"use_block_description": true
+		"block": "minecraft:grass",	
+		"use_on": [
+					{
+						"tags": "query.any_tag('dirt')"
+					}
+				]
 	}
 }
 ```
 
 ### minecraft:interact_button
+
+:::tip
+This only shows an interact button/tooltip for touch-screen and controller devices
+:::
 
 <CodeHeader></CodeHeader>
 
@@ -544,17 +555,7 @@ This component allows an item to be used on a liquid block to trigger the "minec
 }
 ```
 
-### minecraft:knockback_resistance
 
-<CodeHeader></CodeHeader>
-
-```json
-{
-	"minecraft:knockback_resistance": {
-		"protection": 0.4
-	}
-}
-```
 
 ### minecraft:enchantable
 The value property is a 32-bit integer. 
@@ -639,7 +640,7 @@ Note: The "all" enchantable slot allows you to apply any enchantment that you wa
 }
 ```
 
-### minecraft:armor
+
 This component allows you to put the item into the armor slot specified by the minecraft:wearable component. It also stops attatchables from working on the item while it is in a hand slot or while the player is in first person mode. If you want a piece of armor that can still be seen while in first person then don't include this component, and instead include only the minecraft:wearable component, then it will be visible in first person mode too, the side effect of this are that you can't put on the armor directly from the inventory, but instead you have to use the item to put it on, another side effect is that the armor cannot provide any protection values. 
 
 <CodeHeader></CodeHeader>
@@ -655,13 +656,16 @@ This component allows you to put the item into the armor slot specified by the m
 
 ### minecraft:wearable
 Allows the item to be worn in the specified inventory slot type. 
-
+:::warning
+This component was `"minecraft:armor"` but its contents moved to here
+:::
 <CodeHeader></CodeHeader>
 
 ```json
 {
 	"minecraft:wearable": {
 		"dispensable" : true,
+		"protection": 9,
 		"slot": "slot.armor.feet" // Can be slot listed in the '/replaceitem' command
 	}
 }
@@ -689,7 +693,7 @@ Allows the item to be worn in the specified inventory slot type.
 ```json
 {
 	"minecraft:record": {
-		"sound_event": "cat", // Currently restricted to strings listed below
+		"sound_event": "cat", // This is restricted to strings listed below
 		"duration": 5,
 		"comparator_signal": 8
 	}
@@ -773,7 +777,7 @@ Allows the item to be worn in the specified inventory slot type.
 ```json
 {
 	"minecraft:digger": {
-		"use_efficiency": true,
+		"use_efficiency": true, //Makes the tool mine faster with the efficiency enchantment
 		"destroy_speeds": [
 			{
 				"block": {
@@ -841,7 +845,8 @@ Throws the item as the projectile entity type specified in the "minecraft:projec
 }
 ```
 
-:::warning Frame field no longer works. First texture of an array will be applied. :::
+:::warning Frame field no longer works. First texture of an array will be applied. 
+:::
 
 ### minecraft:creative_category
 
@@ -859,7 +864,7 @@ _Full list of categories can be found [here](/documentation/creative-categories)
 
 ### minecraft:food
 
-    _New Syntax_
+    New Syntax
 
 <CodeHeader></CodeHeader>
 
@@ -885,43 +890,6 @@ _Full list of categories can be found [here](/documentation/creative-categories)
 ```json
 {
 	"minecraft:use_animation": "eat" // Adds the animation and sound when eating a food item. It can also be changed to "drink".
-}
-```
-
-### minecraft:render_offsets
-
-    _New Syntax_
-
-<CodeHeader></CodeHeader>
-
-```json
-{
-	"minecraft:render_offsets": {
-		"main_hand": {
-			"first_person": {
-				"position": [1, 1, 1],
-				"rotation": [1, 1, 1],
-				"scale": [1, 1, 1]
-			},
-			"third_person": {
-				"position": [1, 1, 1],
-				"rotation": [1, 1, 1],
-				"scale": [1, 1, 1]
-			}
-		},
-		"off_hand": {
-			"first_person": {
-				"position": [1, 1, 1],
-				"rotation": [1, 1, 1],
-				"scale": [1, 1, 1]
-			},
-			"third_person": {
-				"position": [1, 1, 1],
-				"rotation": [1, 1, 1],
-				"scale": [1, 1, 1]
-			}
-		}
-	}
 }
 ```
 
@@ -984,7 +952,7 @@ If your item isn't showing up, these changes might have broken your item.
 Niche Features
 
 -   Components
-    -   `minecraft:icon` - Property `"frame"` may take in Molang values.
+    -   `minecraft:icon` - Property `"frame"` may take in Molang values. (This value no longer works)
 
 > Broken/Nonfunctional Features
 
@@ -1000,10 +968,9 @@ Niche Features
     -   `"saddle"` - Currently has no known function.
     -   `minecraft:shears` - Currently has no known function.
     -   `minecraft:bucket` - Currently has no known function.
-    -   `minecraft:digger` - `use_efficiency` - Parameter Currently has no known function.
 
 > Current Limitations
 
 -   Vanilla Items are hardcoded; you may not override or access them, using the new format.
--   `minecraft:record` - May not add a custom `sound_event`.
+-   `minecraft:record` - Does not allow for a custom `sound_event`.
 -   Items aliases currently do not work.
